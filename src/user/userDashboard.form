@@ -203,7 +203,7 @@
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/images/JEN BG (1).jpg"/>
+              <Image iconType="3" name="/images/3.png"/>
             </Property>
           </Properties>
           <Constraints>

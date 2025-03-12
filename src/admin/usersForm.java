@@ -130,7 +130,7 @@ public class usersForm extends javax.swing.JFrame {
         });
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 0, 110, 60));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/JEN BG (1).jpg"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3.png"))); // NOI18N
         jLabel4.setText("jLabel4");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 460));
 

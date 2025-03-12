@@ -93,7 +93,7 @@ public class userDashboard extends javax.swing.JFrame {
         });
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 0, 150, 60));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/JEN BG (1).jpg"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 460));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
