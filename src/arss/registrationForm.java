@@ -6,6 +6,7 @@
 package arss;
 
 import config.dbConnector;
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -24,6 +25,9 @@ public class registrationForm extends javax.swing.JFrame {
     public registrationForm() {
         initComponents();
     }
+    
+    Color navcolor = new Color(204,255,255);
+    Color hovercolor = new Color(0,255,255);
     
     public static String email, usname;  
     
@@ -135,6 +139,12 @@ public class registrationForm extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 registerMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                registerMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                registerMouseExited(evt);
+            }
         });
         register.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,6 +158,12 @@ public class registrationForm extends javax.swing.JFrame {
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton1MouseExited(evt);
             }
         });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -208,6 +224,7 @@ public class registrationForm extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 460));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void lnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lnActionPerformed
@@ -276,6 +293,22 @@ public class registrationForm extends javax.swing.JFrame {
     private void ctActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ctActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ctActionPerformed
+
+    private void registerMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerMouseEntered
+        register.setBackground(hovercolor);
+    }//GEN-LAST:event_registerMouseEntered
+
+    private void registerMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerMouseExited
+        register.setBackground(navcolor);
+    }//GEN-LAST:event_registerMouseExited
+
+    private void jButton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseEntered
+        jButton1.setBackground(hovercolor);
+    }//GEN-LAST:event_jButton1MouseEntered
+
+    private void jButton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseExited
+       jButton1.setBackground(navcolor);
+    }//GEN-LAST:event_jButton1MouseExited
 
     /**
      * @param args the command line arguments

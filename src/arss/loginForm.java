@@ -7,6 +7,7 @@ package arss;
 
 
 import admin.adminDashboard;
+import config.Session;
 import config.dbConnector;
 import java.awt.Color;
 import java.sql.ResultSet;
@@ -41,8 +42,15 @@ public class loginForm extends javax.swing.JFrame {
             if(resultSet.next()){
                 status = resultSet.getString("u_status");
                 type = resultSet.getString("u_type");
-                
-            
+                Session sess = Session.getInstance();
+                sess.setUid(resultSet.getInt("u_id"));
+                sess.setFname(resultSet.getString("u_fname"));
+                sess.setLname(resultSet.getString("u_lname"));
+                sess.setEmail(resultSet.getString("u_email"));
+                sess.setUsername(resultSet.getString("u_username"));
+                sess.setStatus(resultSet.getString("u_status"));
+                sess.setType(resultSet.getString("u_type"));
+                sess.setContact(resultSet.getString("u_contact"));
                 return true;
             }else{
                 return false;
@@ -165,6 +173,7 @@ public class loginForm extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
