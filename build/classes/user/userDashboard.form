@@ -204,11 +204,11 @@
                           <Font name="NSimSun" size="18" style="3"/>
                         </Property>
                         <Property name="horizontalAlignment" type="int" value="0"/>
-                        <Property name="text" type="java.lang.String" value="Staff"/>
+                        <Property name="text" type="java.lang.String" value="Account"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                          <AbsoluteConstraints x="30" y="160" width="70" height="30"/>
+                          <AbsoluteConstraints x="20" y="160" width="90" height="30"/>
                         </Constraint>
                       </Constraints>
                     </Component>

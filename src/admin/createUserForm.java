@@ -9,7 +9,9 @@ import arss.registrationForm;
 import static arss.registrationForm.email;
 import static arss.registrationForm.usname;
 import config.dbConnector;
+import config.passwordHasher;
 import java.awt.Color;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -129,7 +131,7 @@ public class createUserForm extends javax.swing.JFrame {
         delete = new javax.swing.JButton();
         clear = new javax.swing.JButton();
         cancel = new javax.swing.JButton();
-        ps = new javax.swing.JTextField();
+        ps = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -346,12 +348,8 @@ public class createUserForm extends javax.swing.JFrame {
         });
         jPanel3.add(cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 140, 80, 30));
 
-        ps.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                psActionPerformed(evt);
-            }
-        });
-        jPanel3.add(ps, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, 250, 25));
+        ps.setEnabled(false);
+        jPanel3.add(ps, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, 250, 30));
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 670, 390));
 
@@ -396,36 +394,41 @@ public class createUserForm extends javax.swing.JFrame {
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
 
-        if(fn.getText().isEmpty()||ln.getText().isEmpty()||em.getText().isEmpty()
-            ||un.getText().isEmpty()||ps.getText().isEmpty()||ct.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"All fields are Required!");
-
-        }else if(ps.getText().length()<8){
-            JOptionPane.showMessageDialog(null,"Password should be 8 above!");
-            ps.setText("");
-        }else if(!em.getText().matches("^.+@.+..com")){
-            JOptionPane.showMessageDialog(null,"Invalid Email format!");
-        }else if(!ct.getText().matches("\\d{11}")){
-            JOptionPane.showMessageDialog(null,"Contact number Must be only numbers!");
-            JOptionPane.showMessageDialog(null,"Type atleast 11 numbers!");
-        }else if(duplicateCheck()){
-            System.out.println("Duplicate Exist!");
-        }else{
-            dbConnector dbc = new dbConnector();
-            if(dbc.insertData("INSERT INTO tbl_user(u_fname, u_lname, u_email, u_type, u_username, u_password, u_contact, u_status)"
-                + "VALUES('"+fn.getText()+"', '"+ln.getText()+"', '"+em.getText()+"',"
-                + " '"+ut.getSelectedItem()+"', '"+un.getText()+"',"
-                + " '"+ps.getText()+"', '"+ct.getText()+"', '"+us.getSelectedItem()+"')"))
-        {
-            JOptionPane.showMessageDialog(null,"Inserted Sucessfully!");
+        if (fn.getText().isEmpty() || ln.getText().isEmpty() || em.getText().isEmpty()
+        || un.getText().isEmpty() || ps.getText().isEmpty() || ct.getText().isEmpty()) {
+           JOptionPane.showMessageDialog(null, "All fields are Required!");
+        } else if (ps.getText().length() < 8) {
+           JOptionPane.showMessageDialog(null, "Password should be 8 characters or more!");
+             ps.setText("");
+        } else if (!em.getText().matches("^.+@.+..com")) { 
+           JOptionPane.showMessageDialog(null, "Invalid Email format!");
+        } else if (!ct.getText().matches("\\d{11}")) {
+           JOptionPane.showMessageDialog(null, "Contact number must be exactly 11 digits!");
+        } else if (duplicateCheck()) {
+           System.out.println("Duplicate Exist!");
+        } else {
+           dbConnector dbc = new dbConnector();
+    
+        try {
+        // Hash the password before inserting
+        String hashedPass = passwordHasher.hashPassword(ps.getText());
+        
+        // Use the hashed password in the SQL insert statement
+        if (dbc.insertData("INSERT INTO tbl_user(u_fname, u_lname, u_email, u_type, u_username, u_password, u_contact, u_status) "
+                + "VALUES('" + fn.getText() + "', '" + ln.getText() + "', '" + em.getText() + "', "
+                + "'" + ut.getSelectedItem() + "', '" + un.getText() + "', "
+                + "'" + hashedPass + "', '" + ct.getText() + "', '" + us.getSelectedItem() + "')")) {
+            JOptionPane.showMessageDialog(null, "Inserted Successfully!");
             usersForm uf = new usersForm();
             uf.setVisible(true);
             this.dispose();
-        }else{
-            JOptionPane.showMessageDialog(null,"Connection Error!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Connection Error!");
         }
-
-        }
+    } catch (NoSuchAlgorithmException ex) {
+        System.out.println("" + ex);
+    }
+}
     }//GEN-LAST:event_addActionPerformed
 
     private void unActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unActionPerformed
@@ -521,10 +524,6 @@ public class createUserForm extends javax.swing.JFrame {
        
        
     }//GEN-LAST:event_cancelActionPerformed
-
-    private void psActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_psActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_psActionPerformed
 
     private void addMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseEntered
         add.setBackground(hovercolor);
@@ -629,7 +628,7 @@ public class createUserForm extends javax.swing.JFrame {
     public javax.swing.JTextField ln;
     private javax.swing.JLabel pass;
     private javax.swing.JLabel pass1;
-    public javax.swing.JTextField ps;
+    public javax.swing.JPasswordField ps;
     private javax.swing.JButton refresh;
     public javax.swing.JTextField uid;
     public javax.swing.JTextField un;

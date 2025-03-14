@@ -102,9 +102,9 @@ public class userDashboard extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("NSimSun", 3, 18)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Staff");
+        jLabel9.setText("Account");
         jPanel7.add(jLabel9);
-        jLabel9.setBounds(30, 160, 70, 30);
+        jLabel9.setBounds(20, 160, 90, 30);
 
         jPanel5.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 30, 130, 190));
 
@@ -168,7 +168,9 @@ public class userDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
-        
+        accountDetails accd = new accountDetails();
+        accd.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jPanel7MouseClicked
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated

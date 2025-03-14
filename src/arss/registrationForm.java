@@ -6,7 +6,9 @@
 package arss;
 
 import config.dbConnector;
+import config.passwordHasher;
 import java.awt.Color;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -75,20 +77,20 @@ public class registrationForm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         ln = new javax.swing.JTextField();
-        pass = new javax.swing.JLabel();
         em = new javax.swing.JTextField();
-        ps = new javax.swing.JPasswordField();
         register = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         userole = new javax.swing.JLabel();
         un = new javax.swing.JTextField();
-        username = new javax.swing.JLabel();
         ut = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
         fn = new javax.swing.JTextField();
-        pass1 = new javax.swing.JLabel();
-        ct = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
+        ps = new javax.swing.JPasswordField();
+        ct = new javax.swing.JTextField();
+        pass1 = new javax.swing.JLabel();
+        pass = new javax.swing.JLabel();
+        username = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -127,11 +129,7 @@ public class registrationForm extends javax.swing.JFrame {
             }
         });
         jPanel2.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 120, 250, 25));
-
-        pass.setText("Password:");
-        jPanel2.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 240, -1, 20));
         jPanel2.add(em, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 150, 250, 25));
-        jPanel2.add(ps, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 240, 250, 25));
 
         register.setBackground(new java.awt.Color(204, 255, 255));
         register.setText("Register");
@@ -183,9 +181,6 @@ public class registrationForm extends javax.swing.JFrame {
         });
         jPanel2.add(un, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 210, 250, 25));
 
-        username.setText("User Name:");
-        jPanel2.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 210, -1, 20));
-
         ut.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Staff", "" }));
         ut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -202,17 +197,25 @@ public class registrationForm extends javax.swing.JFrame {
         });
         jPanel2.add(fn, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, 250, 25));
 
-        pass1.setText("Contact:");
-        jPanel2.add(pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 270, -1, 20));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel3.add(ps, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 240, 250, 30));
 
         ct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ctActionPerformed(evt);
             }
         });
-        jPanel2.add(ct, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 250, 25));
+        jPanel3.add(ct, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 280, 250, 25));
 
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pass1.setText("Contact:");
+        jPanel3.add(pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 280, -1, 20));
+
+        pass.setText("Password:");
+        jPanel3.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 240, -1, 30));
+
+        username.setText("User Name:");
+        jPanel3.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 210, -1, 20));
+
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 390));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 610, 390));
@@ -252,10 +255,14 @@ public class registrationForm extends javax.swing.JFrame {
             System.out.println("Duplicate Exist!");
         }else{
         dbConnector dbc = new dbConnector();
+        
+        try{
+        String pass = passwordHasher.hashPassword(ps.getText());
+        
         if(dbc.insertData("INSERT INTO tbl_user(u_fname, u_lname, u_email, u_type, u_username, u_password, u_contact, u_status)"
                 + "VALUES('"+fn.getText()+"', '"+ln.getText()+"', '"+em.getText()+"',"
                         + " '"+ut.getSelectedItem()+"', '"+un.getText()+"',"
-                        + " '"+ps.getText()+"', '"+ct.getText()+"', 'Pending')"))
+                        + " '"+pass+"', '"+ct.getText()+"', 'Pending')"))
         {
           JOptionPane.showMessageDialog(null,"Inserted Sucessfully!");
           loginForm lfr = new loginForm();
@@ -264,8 +271,10 @@ public class registrationForm extends javax.swing.JFrame {
         }else{
           JOptionPane.showMessageDialog(null,"Connection Error!");
         }
-        
+        }catch(NoSuchAlgorithmException ex){
+            System.out.println(""+ex);
         }
+       }
     }//GEN-LAST:event_registerActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked

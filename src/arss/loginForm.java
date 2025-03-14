@@ -9,7 +9,9 @@ package arss;
 import admin.adminDashboard;
 import config.Session;
 import config.dbConnector;
+import config.passwordHasher;
 import java.awt.Color;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -37,9 +39,17 @@ public class loginForm extends javax.swing.JFrame {
     public static boolean loginAcc(String username, String password){
         dbConnector connector = new dbConnector();
         try{
-            String query = "SELECT * FROM tbl_user  WHERE u_username = '" + username + "' AND u_password = '" + password + "'";
+             String query = "SELECT * FROM tbl_user  WHERE u_username = '" + username + "'";
             ResultSet resultSet = connector.getData(query);
             if(resultSet.next()){
+                
+                
+                  String hashedPass = resultSet.getString("u_password");
+                  String rehashedPass = passwordHasher.hashPassword(password);
+                  
+                  System.out.println(""+hashedPass);
+                  System.out.println(""+rehashedPass);
+                  if(hashedPass.equals(rehashedPass)){
                 status = resultSet.getString("u_status");
                 type = resultSet.getString("u_type");
                 Session sess = Session.getInstance();
@@ -52,13 +62,19 @@ public class loginForm extends javax.swing.JFrame {
                 sess.setType(resultSet.getString("u_type"));
                 sess.setContact(resultSet.getString("u_contact"));
                 return true;
+                
+                  }else{
+                  return false;
+                  }
+               
             }else{
                 return false;
             }
-          }catch (SQLException ex) {
+        }catch (SQLException | NoSuchAlgorithmException ex) {
+            
             return false;
         }
-
+    
     }
     
     
@@ -74,15 +90,15 @@ public class loginForm extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         pass = new javax.swing.JPasswordField();
         jLabel8 = new javax.swing.JLabel();
-        user = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         showpass = new javax.swing.JCheckBox();
         login = new javax.swing.JButton();
+        user = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -100,13 +116,6 @@ public class loginForm extends javax.swing.JFrame {
         jLabel1.setText("WELCOME TO APPOINTMENT RECORDS SYSTEM!");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 500, -1));
 
-        jLabel2.setFont(new java.awt.Font("NSimSun", 2, 14)); // NOI18N
-        jLabel2.setText("LOG IN FORM:");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, -1, -1));
-
-        jLabel3.setText("Username: ");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, -1, -1));
-
         jLabel6.setText("Password:");
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 200, -1, -1));
         jPanel2.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 250, 40));
@@ -119,13 +128,6 @@ public class loginForm extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 310, 190, 20));
-
-        user.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userActionPerformed(evt);
-            }
-        });
-        jPanel2.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, 250, 40));
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -153,6 +155,21 @@ public class loginForm extends javax.swing.JFrame {
             }
         });
         jPanel3.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 280, 70, 30));
+
+        user.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userActionPerformed(evt);
+            }
+        });
+        jPanel3.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, 250, 40));
+
+        jLabel3.setText("Username: ");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, -1, 40));
+
+        jLabel2.setFont(new java.awt.Font("NSimSun", 2, 14)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("LOGIN FORM:");
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 100, 250, -1));
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, 380));
 
